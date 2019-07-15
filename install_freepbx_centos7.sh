@@ -48,12 +48,12 @@ rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
 # Install php 5.6
-yum remove php*
-yum install php56w php56w-pdo php56w-mysql php56w-mbstring php56w-pear php56w-process php56w-xml php56w-opcache php56w-ldap php56w-intl php56w-soap
+yum -y remove php*
+yum -y install php56w php56w-pdo php56w-mysql php56w-mbstring php56w-pear php56w-process php56w-xml php56w-opcache php56w-ldap php56w-intl php56w-soap
 
 # Install nodejs
 curl -sL https://rpm.nodesource.com/setup_8.x | bash -
-yum install -y nodejs
+yum -y install nodejs
 
 # Enable and Start MariaDB
 systemctl enable mariadb.service
@@ -69,14 +69,31 @@ systemctl start httpd.service
 # Install Legacy Pear requirements
 pear install Console_Getopt
 
-# Download Asterisk
+# Download Jansson & Asterisk
 cd /usr/src
-wget http://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
-wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
 wget -O jansson.tar.gz https://github.com/akheron/jansson/archive/v2.10.tar.gz
 wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-15-current.tar.gz
 
-# Compile and Install jansson
+####################################################################################### If you don't have any physical PSTN hardware attached to this machine, 
+# you don't need to install DAHDI (For example, a T1 or E1 card, or a USB device). 
+# Most smaller setups will not have DAHDI hardware, and this step can be safely skipped.
+#
+#wget http://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
+#wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
+#cd /usr/src
+#tar xvfz dahdi-linux-complete-current.tar.gz
+#tar xvfz libpri-current.tar.gz
+#rm -f dahdi-linux-complete-current.tar.gz libpri-current.tar.gz
+#cd dahdi-linux-complete-*
+#make all
+#make install
+#make config
+#cd /usr/src/libpri-*
+#make
+#make install
+######################################################################################
+
+# Compile and Install Jansson
 cd /usr/src
 tar vxfz jansson.tar.gz
 rm -f jansson.tar.gz
