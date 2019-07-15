@@ -28,7 +28,7 @@ yum -y groupinstall core base "Development Tools"
 # Add Asterisk User
 adduser asterisk -M -c "Asterisk User"
 
-if [ ! -d "$DIRECTORY" ]; then
+if [ ! -d "/home/asterisk" ]; then
   mkhomedir_helper asterisk
 fi
 
